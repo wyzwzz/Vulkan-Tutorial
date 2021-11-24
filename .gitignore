@@ -4,4 +4,7 @@ build
 .vs
 .vscode
 .idea
-data
+data/models
+data/textures
+data/shaders/*/*.spv
+data/shaders/*.spv
