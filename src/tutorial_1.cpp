@@ -3,15 +3,19 @@
 //
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/hash.hpp>
+
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
+
 #include <chrono>
 #include <cstdlib>
 #include <iostream>
@@ -460,6 +464,7 @@ class HelloTriangleApplication
         }
 
         vkGetSwapchainImagesKHR(device,swapChain,&imageCount, nullptr);
+        std::cout<<"created image count "<<imageCount<<std::endl;
         swapChainImages.resize(imageCount);
         vkGetSwapchainImagesKHR(device,swapChain,&imageCount,swapChainImages.data());
 
@@ -887,6 +892,7 @@ class HelloTriangleApplication
      * each event is using a single asynchronously function call, should use fences or semaphores
      */
     void drawFrame(){
+        //wait for currentFrame's fence
         vkWaitForFences(device,1,&inFlightFences[currentFrame],VK_TRUE,UINT64_MAX);
 
         uint32_t imageIndex;
@@ -952,7 +958,7 @@ class HelloTriangleApplication
             throw std::runtime_error("failed to present swap chain image!");
         }
 
-        currentFrame = (currentFrame + 1) & MAX_FRAMES_IN_FLIGHT;
+        currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
     }
     //swap chain recreation
     void recreateSwapChain(){
