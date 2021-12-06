@@ -32,6 +32,7 @@ target_link_libraries(MeshViewer PRIVATE
 target_include_directories(MeshViewer
         PRIVATE
         ${Vulkan_INCLUDE_DIR}
+        ${PROJECT_SOURCE_DIR}/third_party
         )
 target_compile_features(MeshViewer PRIVATE
         cxx_std_17)
