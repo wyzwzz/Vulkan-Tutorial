@@ -297,6 +297,7 @@ class MeshViewerApplication{
     int window_h = 1080;
     int iGPU = 0;
 
+    //---------------------------------------------------------------------------
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
     VkSurfaceKHR surface;
@@ -314,6 +315,8 @@ class MeshViewerApplication{
     VkExtent2D swapChainExtent;//resolution fo images in swap chain
     std::vector<VkImageView> swapChainImageViews;
 
+    //---------------------------------------------------------------------------
+
     VkRenderPass renderPass;
     VkDescriptorSetLayout descriptorSetLayout;
     VkPipelineLayout pipelineLayout;
@@ -330,6 +333,8 @@ class MeshViewerApplication{
     VkImageView depthImageView;
 
     std::vector<VkFramebuffer> swapChainFramebuffers;
+
+    //---------------------------------------------------------------------------
 
     struct DrawModel{
         std::vector<Vertex> vertices;
@@ -393,6 +398,7 @@ class MeshViewerApplication{
         glfwSetWindowUserPointer(window,this);
     }
     void initVulkan(){
+        //1. default vulkan resources
         createInstance();
         setupDebugMessenger();
         createSurface();
@@ -400,6 +406,7 @@ class MeshViewerApplication{
         createLogicalDevice();
         createSwapChain();
         createSwapChainImageViews();
+        //2.draw static vulkan resources
         createRenderPass();
         createDescriptorSetLayout();
         createGraphicsPipeline();
@@ -407,13 +414,9 @@ class MeshViewerApplication{
         createColorResources();
         createDepthResources();
         createFramebuffers();
-//        createTextureImage();
-//        createTextureImageView();
-//        createTextureSampler();
+        //3.draw dynamic vulkan resources
         loadModel();
         createModelResources();
-//        createVertexBuffer();
-//        createIndexBuffer();
         createUniformBuffers();
         createDescriptorPool();
         createDescriptorSets();
@@ -472,6 +475,7 @@ class MeshViewerApplication{
     }
 
   private:
+    //create vulkan default resources
     void createInstance();
     void setupDebugMessenger();
     void createSurface();
@@ -1549,9 +1553,9 @@ void MeshViewerApplication::createDescriptorPool()
     LOG_INFO("{}",__FUNCTION__ );
     std::array<VkDescriptorPoolSize,2> poolSize{};
     poolSize[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    poolSize[0].descriptorCount = static_cast<uint32_t>(swapChainImages.size());
+    poolSize[0].descriptorCount = static_cast<uint32_t>(swapChainImages.size()+2);
     poolSize[1].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    poolSize[1].descriptorCount = static_cast<uint32_t>(swapChainImages.size());
+    poolSize[1].descriptorCount = static_cast<uint32_t>(swapChainImages.size()+2);
 
     VkDescriptorPoolCreateInfo poolInfo{};
     poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;

@@ -8,3 +8,4 @@ data/models
 data/textures
 data/shaders/*/*.spv
 data/shaders/*.spv
+data/volumes
